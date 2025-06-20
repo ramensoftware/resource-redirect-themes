@@ -1,0 +1,329 @@
+- author: niivu
+  link: https://github.com/niivu/resource-redirect-icon-themes
+  themes:
+    - path: themes/icons/niivu/All White Icons.zip
+      name: All White Icons
+    - path: themes/icons/niivu/antu alt.zip
+      name: Antu alt
+    - path: themes/icons/niivu/antu.zip
+      name: Antu
+    - path: themes/icons/niivu/kuyen alt.zip
+      name: Kuyen Alt
+    - path: themes/icons/niivu/kuyen.zip
+      name: Kuyen
+    - path: themes/icons/niivu/ARC Symbolic.zip
+      name: ARC Symbolic
+    - path: themes/icons/niivu/ARC.zip
+      name: ARC
+    - path: themes/icons/niivu/arc-neutral brown.zip
+      name: Arc Neutral Brown
+    - path: themes/icons/niivu/arc-neutral grey.zip
+      name: Arc Neutral Grey
+    - path: themes/icons/niivu/BANAANA OneUI.zip
+      name: BananaOneUI
+    - path: themes/icons/niivu/Big Sur DarkMode.zip
+      name: Big Sur DarkMode
+    - path: themes/icons/niivu/Big Sur LightMode.zip
+      name: Big Sur LightMode
+    - path: themes/icons/niivu/blanked dark mode.zip
+      name: Blanked DarkMode
+    - path: themes/icons/niivu/blanked light mode.zip
+      name: Blanked LightMode
+    - path: themes/icons/niivu/bonny by niivu.zip
+      name: Bonny
+    - path: themes/icons/niivu/bouquet.zip
+      name: Bouquet
+    - path: themes/icons/niivu/buuf.zip
+      name: Buuf
+    - path: themes/icons/niivu/cakeOS 2.0.zip
+      name: CakeOS 2.0
+    - path: themes/icons/niivu/Cake OS Blue.zip
+      name: CakeOS Blue
+    - path: themes/icons/niivu/Cake OS Green.zip
+      name: CakeOS Green
+    - path: themes/icons/niivu/Cake OS Orange.zip
+      name: CakeOS Orange
+    - path: themes/icons/niivu/Cake OS Purple.zip
+      name: CakeOS Purple
+    - path: themes/icons/niivu/Cake OS Red.zip
+      name: CakeOS Red
+    - path: themes/icons/niivu/candy original folders.zip
+      name: Candy Original
+    - path: themes/icons/niivu/candy outlined folders.zip
+      name: Candy Outlined
+    - path: themes/icons/niivu/Catppuccin.zip
+      name: Catppuccin
+    - path: themes/icons/niivu/Catppuccin blue.zip
+      name: Catppuccin Blue
+    - path: themes/icons/niivu/Catppuccin flamingo.zip
+      name: Catppuccin Flamingo
+    - path: themes/icons/niivu/Catppuccin green.zip
+      name: Catppuccin Green
+    - path: themes/icons/niivu/Catppuccin Latte.zip
+      name: Catppuccin Latte
+    - path: themes/icons/niivu/Catppuccin lavender.zip
+      name: Catppuccin Lavender
+    - path: themes/icons/niivu/Catppuccin maroon.zip
+      name: Catppuccin Maroon
+    - path: themes/icons/niivu/Catppuccin mauve.zip
+      name: Catppuccin Mauve
+    - path: themes/icons/niivu/Catppuccin Mocha.zip
+      name: Catppuccin Mocha
+    - path: themes/icons/niivu/Catppuccin peach.zip
+      name: Catppuccin Peach
+    - path: themes/icons/niivu/Catppuccin pink.zip
+      name: Catppuccin Pink
+    - path: themes/icons/niivu/Catppuccin red.zip
+      name: Catppuccin Red
+    - path: themes/icons/niivu/Catppuccin sky.zip
+      name: Catppuccin Sky
+    - path: themes/icons/niivu/Catppuccin teal.zip
+      name: Catppuccin Teal
+    - path: themes/icons/niivu/Catppuccin yellow.zip
+      name: Catppuccin Yellow
+    - path: themes/icons/niivu/Deepin Blue - for dark themes.zip
+      name: Deepin Blue DarkMode
+    - path: themes/icons/niivu/Deepin Blue - for light themes.zip
+      name: Deepin Blue LightMode
+    - path: themes/icons/niivu/Deepin Brown - for dark themes.zip
+      name: Deepin Brown DarkMode
+    - path: themes/icons/niivu/Deepin Brown - for light themes.zip
+      name: Deepin Brown LightMode
+    - path: themes/icons/niivu/Deepin Green - for dark themes.zip
+      name: Deepin Green DarkMode
+    - path: themes/icons/niivu/Deepin Green - for light themes.zip
+      name: Deepin Green LightMode
+    - path: themes/icons/niivu/Deepin Slate - for dark themes.zip
+      name: Deepin Slate DarkMode
+    - path: themes/icons/niivu/Deepin Slate - for light themes.zip
+      name: Deepin Slate LightMode
+    - path: themes/icons/niivu/Deepo Icon pack.zip
+      name: Deepo
+    - path: themes/icons/niivu/Tango.zip
+      name: Tango
+    - path: themes/icons/niivu/Tangerine.zip
+      name: Tangerine
+    - path: themes/icons/niivu/Gnome.zip
+      name: Gnome
+    - path: themes/icons/niivu/Cheser.zip
+      name: Cheser
+    - path: themes/icons/niivu/Gnome Brave.zip
+      name: Gnome Brave
+    - path: themes/icons/niivu/Gnome Human.zip
+      name: Gnome Human
+    - path: themes/icons/niivu/Gnome Noble.zip
+      name: Gnome Noble
+    - path: themes/icons/niivu/Gnome Wine.zip
+      name: Gnome Wine
+    - path: themes/icons/niivu/Gnome Wise.zip
+      name: Gnome Wise
+    - path: themes/icons/niivu/Elementary.zip
+      name: Elementary
+    - path: themes/icons/niivu/Elementary NEW.zip
+      name: Elementary New
+    - path: themes/icons/niivu/Humanity.zip
+      name: Humanity
+    - path: themes/icons/niivu/Everblush.zip
+      name: Everblush
+    - path: themes/icons/niivu/everforest.zip
+      name: Everforest
+    - path: themes/icons/niivu/everforest blank.zip
+      name: Everforest Blank
+    - path: themes/icons/niivu/Eyecandy.zip
+      name: Eyecandy
+    - path: themes/icons/niivu/FABA.zip
+      name: Faba
+    - path: themes/icons/niivu/FABA Symbolic.zip
+      name: Faba Symbolic
+    - path: themes/icons/niivu/SLATE.zip
+      name: Slate
+    - path: themes/icons/niivu/SLATE Symbolic.zip
+      name: Slate Symbolic
+    - path: themes/icons/niivu/Fetch.zip
+      name: Fetch
+    - path: themes/icons/niivu/Fluent.zip
+      name: Fluent
+    - path: themes/icons/niivu/Fluent Keys Night.zip
+      name: Fluent Keys Night
+    - path: themes/icons/niivu/Fluent Keys Day.zip
+      name: Fluent Keys Day
+    - path: themes/icons/niivu/FLURRY.zip
+      name: Flurry
+    - path: themes/icons/niivu/Gruvbox.zip
+      name: Gruvbox
+    - path: themes/icons/niivu/gruvbox plus - Olive.zip
+      name: Gruvbox Plus Olive
+    - path: themes/icons/niivu/Gruvbox numix.zip
+      name: Gruvbox Numix
+    - path: themes/icons/niivu/Haiku BeOS.zip
+      name: Haiku BeOS
+    - path: themes/icons/niivu/janguru blue.zip
+      name: Janguru Blue
+    - path: themes/icons/niivu/janguru bluegrey.zip
+      name: Janguru BlueGrey
+    - path: themes/icons/niivu/janguru brown.zip
+      name: Janguru Brown
+    - path: themes/icons/niivu/janguru green.zip
+      name: Janguru Green
+    - path: themes/icons/niivu/janguru grey.zip
+      name: Janguru Grey
+    - path: themes/icons/niivu/janguru orange.zip
+      name: Janguru Orange
+    - path: themes/icons/niivu/koZ.zip
+      name: koZ
+    - path: themes/icons/niivu/Linuxfx-11-AIO.zip
+      name: Linuxfx 11 AIO
+    - path: themes/icons/niivu/Linuxfx-11-lite.zip
+      name: Linuxfx 11 Lite
+    - path: themes/icons/niivu/lol.zip
+      name: Lol
+    - path: themes/icons/niivu/Lumicons Folders.zip
+      name: Lumicons Folders
+    - path: themes/icons/niivu/Lumicons Symbols.zip
+      name: Lumicons Symbols
+    - path: themes/icons/niivu/mac osx.zip
+      name: macOSx
+    - path: themes/icons/niivu/macOS Regular.zip
+      name: macOS Regular
+    - path: themes/icons/niivu/macOS blue.zip
+      name: macOS Blue
+    - path: themes/icons/niivu/macOS Yellow Folders.zip
+      name: macOS Yellow
+    - path: themes/icons/niivu/macOS Dark Mode.zip
+      name: macOS DarkMode
+    - path: themes/icons/niivu/macOS Light Mode.zip
+      name: macOS LightMode
+    - path: themes/icons/niivu/macpac darkmode.zip
+      name: macPac DarkMode
+    - path: themes/icons/niivu/macpac lightmode.zip
+      name: macPac LightMode
+    - path: themes/icons/niivu/mechanical.zip
+      name: Mechanical
+    - path: themes/icons/niivu/MINIUM2.zip
+      name: Minium2
+    - path: themes/icons/niivu/Nord Papirus.zip
+      name: Nord Papirus
+    - path: themes/icons/niivu/Nord-Papirus-Nova-galactic.zip
+      name: Nord Papirus NovaGalactic
+    - path: themes/icons/niivu/numix.zip
+      name: Numix
+    - path: themes/icons/niivu/numix-remix-blue.zip
+      name: Numix Blue
+    - path: themes/icons/niivu/numix-remix-green.zip
+      name: Numix Green
+    - path: themes/icons/niivu/numix-remix-macos.zip
+      name: Numix macOS
+    - path: themes/icons/niivu/numix-remix-slate.zip
+      name: Numix Slate
+    - path: themes/icons/niivu/numix-remix-windows.zip
+      name: Numix Windows
+    - path: themes/icons/niivu/NUX.zip
+      name: NUX
+    - path: themes/icons/niivu/One Dark Pro.zip
+      name: One Dark Pro
+    - path: themes/icons/niivu/One Dark Pro alt.zip
+      name: One Dark Pro Alt
+    - path: themes/icons/niivu/OneUI4.zip
+      name: One UI4
+    - path: themes/icons/niivu/OS X Minimalism.zip
+      name: OS X Minimalism
+    - path: themes/icons/niivu/OS X Minimalism Symbolic.zip
+      name: OS X Minimalism Symbolic
+    - path: themes/icons/niivu/Paper.zip
+      name: Paper
+    - path: themes/icons/niivu/Papirus Black.zip
+      name: Papirus Black
+    - path: themes/icons/niivu/Papirus Blue Grey.zip
+      name: Papirus BlueGrey
+    - path: themes/icons/niivu/Papirus Blue.zip
+      name: Papirus Blue
+    - path: themes/icons/niivu/Papirus Brown.zip
+      name: Papirus Brown
+    - path: themes/icons/niivu/Papirus Deep Orange.zip
+      name: Papirus Deep Orange
+    - path: themes/icons/niivu/Papirus Dracula.zip
+      name: Papirus Dracula
+    - path: themes/icons/niivu/Papirus Grey.zip
+      name: Papirus Grey
+    - path: themes/icons/niivu/Papirus Magenta.zip
+      name: Papirus Magenta
+    - path: themes/icons/niivu/Papirus Pink.zip
+      name: Papirus Pink
+    - path: themes/icons/niivu/Papirus Red.zip
+      name: Papirus Red
+    - path: themes/icons/niivu/Papirus Solarized.zip
+      name: Papirus Solarized
+    - path: themes/icons/niivu/Papirus Teal.zip
+      name: Papirus Teal
+    - path: themes/icons/niivu/Papirus Violet.zip
+      name: Papirus Violet
+    - path: themes/icons/niivu/Tokyo Night blank.zip
+      name: Tokyo Night
+    - path: themes/icons/niivu/Tokyo Night Papirus.zip
+      name: Tokyo Night Papirus
+    - path: themes/icons/niivu/Tokyo Night SE Papirus.zip
+      name: Tokyo Night SE Papirus
+    - path: themes/icons/niivu/pink folders.zip
+      name: Pink Folders
+    - path: themes/icons/niivu/post.zip
+      name: Post
+    - path: themes/icons/niivu/Pure for dark or dark side panel themes.zip
+      name: Pure Dark
+    - path: themes/icons/niivu/Pure for light themes.zip
+      name: Pure Light
+    - path: themes/icons/niivu/Quixotic-SE Day AIO.zip
+      name: Quixotic Day
+    - path: themes/icons/niivu/Quixotic-SE Dark AIO.zip
+      name: Quixotic Dark
+    - path: themes/icons/niivu/Quixotic-SE Night AIO.zip
+      name: Quixotic Night
+    - path: themes/icons/niivu/Rose Pine.zip
+      name: Rose Pine
+    - path: themes/icons/niivu/solarized Day AIO.zip
+      name: Solarized Day AIO
+    - path: themes/icons/niivu/solarized Night AIO.zip
+      name: Solarized Night AIO
+    - path: themes/icons/niivu/Solus.zip
+      name: Solus
+    - path: themes/icons/niivu/Somatic Rebirth.zip
+      name: Somatic Rebirth
+    - path: themes/icons/niivu/space-shrooms-blue.zip
+      name: Spaceshrooms Blue
+    - path: themes/icons/niivu/space-shrooms-green.zip
+      name: Spaceshrooms Green
+    - path: themes/icons/niivu/space-shrooms-yellow.zip
+      name: Spaceshrooms Yellow
+    - path: themes/icons/niivu/Super Remix Blue.zip
+      name: Super Remix Blue
+    - path: themes/icons/niivu/Super Remix Green.zip
+      name: Super Remix Green
+    - path: themes/icons/niivu/Super Remix Slate.zip
+      name: Super Remix Slate
+    - path: themes/icons/niivu/Sweet Awesomeness.zip
+      name: Sweet Awesomeness
+    - path: themes/icons/niivu/Sweetness Blue folders.zip
+      name: Sweetness Blue
+    - path: themes/icons/niivu/Sweetness Neutral.zip
+      name: Sweetness Neutral
+    - path: themes/icons/niivu/Sweetness Original.zip
+      name: Sweetness Original
+    - path: themes/icons/niivu/Sweetness Pink folders.zip
+      name: Sweetness Pink
+    - path: themes/icons/niivu/Sweetness Purple folders.zip
+      name: Sweetness Purple
+    - path: themes/icons/niivu/Sweet-Rainbow.zip
+      name: Sweet Rainbow
+    - path: themes/icons/niivu/Uos Icon pack.zip
+      name: UOS
+    - path: themes/icons/niivu/Windows 11 New (default).zip
+      name: Windows 11 New (default)
+    - path: themes/icons/niivu/Windows 11 New Folders Blue.zip
+      name: Windows 11 New Folders Blue
+    - path: themes/icons/niivu/Windows 11 New Folders Green.zip
+      name: Windows 11 New Folders Green
+    - path: themes/icons/niivu/Windows 11 New Folders Purple.zip
+      name: Windows 11 New Folders Purple
+    - path: themes/icons/niivu/Windows 11 New Folders Slate.zip
+      name: Windows 11 New Folders Slate
+    - path: themes/icons/niivu/Windows 11 New Folders Yellow.zip
+      name: Windows 11 New Folders Yellow

@@ -1,0 +1,46 @@
+name: PR validation
+
+on:
+  pull_request:
+    branches:
+      - gh-pages
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    name: Test changed files
+    steps:
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v46
+        with:
+          safe_output: false # set to false because we are using an environment variable to store the output and avoid command injection.
+
+      - name: Validate changed files
+        env:
+          ADDED_FILES_COUNT: ${{ steps.changed-files.outputs.added_files_count }}
+          MODIFIED_FILES: ${{ steps.changed-files.outputs.modified_files }}
+          MODIFIED_FILES_COUNT: ${{ steps.changed-files.outputs.modified_files_count }}
+          ALL_CHANGED_AND_MODIFIED_FILES_COUNT: ${{ steps.changed-files.outputs.all_changed_and_modified_files_count }}
+        run: |
+          # Make sure that themes.yaml is modified, and that other files are only added.
+
+          # There should be a single modified file (themes.yaml).
+          if [ "$MODIFIED_FILES_COUNT" -ne 1 ]; then
+            echo "Error: themes.yaml should be the only modified file, but found $MODIFIED_FILES_COUNT modified files."
+            exit 1
+          fi
+
+          # Check that the single modified file is themes.yaml.
+          for file in ${MODIFIED_FILES}; do
+            if [ "$file" != "themes.yaml" ]; then
+              echo "Error: themes.yaml should be the only modified file, but found $file."
+              exit 1
+            fi
+          done
+
+          # Finally, check that all other files are added.
+          if [ "$ADDED_FILES_COUNT" -ne $((ALL_CHANGED_AND_MODIFIED_FILES_COUNT - MODIFIED_FILES_COUNT)) ]; then
+            echo "Error: Expected only new files to be added, but found other changes."
+            exit 1
+          fi
