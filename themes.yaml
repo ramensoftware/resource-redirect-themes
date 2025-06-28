@@ -327,3 +327,8 @@
       name: Windows 11 New Folders Slate
     - path: themes/icons/niivu/Windows 11 New Folders Yellow.zip
       name: Windows 11 New Folders Yellow
+- author: ImSwordQueen
+  link: https://github.com/ImSwordQueen
+  themes:
+    - path: themes/icons/ImSwordQueen/Pane7.zip
+      name: Pane7
