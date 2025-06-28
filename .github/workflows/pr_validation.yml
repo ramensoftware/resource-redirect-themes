@@ -23,24 +23,27 @@ jobs:
           MODIFIED_FILES_COUNT: ${{ steps.changed-files.outputs.modified_files_count }}
           ALL_CHANGED_AND_MODIFIED_FILES_COUNT: ${{ steps.changed-files.outputs.all_changed_and_modified_files_count }}
         run: |
-          # Make sure that themes.yaml is modified, and that other files are only added.
+          # Validate that only added and modified files are allowed.
+          # If there are added files, themes.yaml must be updated.
 
-          # There should be a single modified file (themes.yaml).
-          if [ "$MODIFIED_FILES_COUNT" -ne 1 ]; then
-            echo "Error: themes.yaml should be the only modified file, but found $MODIFIED_FILES_COUNT modified files."
+          # Check that all changes are either added or modified files.
+          if [ "$ALL_CHANGED_AND_MODIFIED_FILES_COUNT" -ne $((ADDED_FILES_COUNT + MODIFIED_FILES_COUNT)) ]; then
+            echo "Error: Only added and modified files are allowed."
             exit 1
           fi
 
-          # Check that the single modified file is themes.yaml.
-          for file in ${MODIFIED_FILES}; do
-            if [ "$file" != "themes.yaml" ]; then
-              echo "Error: themes.yaml should be the only modified file, but found $file."
+          # If there are added files, themes.yaml must be updated.
+          if [ "$ADDED_FILES_COUNT" -gt 0 ]; then
+            themes_yaml_updated=false
+            for file in ${MODIFIED_FILES}; do
+              if [ "$file" = "themes.yaml" ]; then
+                themes_yaml_updated=true
+                break
+              fi
+            done
+
+            if [ "$themes_yaml_updated" = false ]; then
+              echo "Error: When adding new files, themes.yaml must be updated."
               exit 1
             fi
-          done
-
-          # Finally, check that all other files are added.
-          if [ "$ADDED_FILES_COUNT" -ne $((ALL_CHANGED_AND_MODIFIED_FILES_COUNT - MODIFIED_FILES_COUNT)) ]; then
-            echo "Error: Expected only new files to be added, but found other changes."
-            exit 1
           fi
