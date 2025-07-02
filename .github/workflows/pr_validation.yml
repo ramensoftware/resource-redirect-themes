@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Test changed files
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v46
@@ -18,19 +21,32 @@ jobs:
 
       - name: Validate changed files
         env:
+          ADDED_FILES: ${{ steps.changed-files.outputs.added_files }}
           ADDED_FILES_COUNT: ${{ steps.changed-files.outputs.added_files_count }}
           MODIFIED_FILES: ${{ steps.changed-files.outputs.modified_files }}
           MODIFIED_FILES_COUNT: ${{ steps.changed-files.outputs.modified_files_count }}
           ALL_CHANGED_AND_MODIFIED_FILES_COUNT: ${{ steps.changed-files.outputs.all_changed_and_modified_files_count }}
         run: |
-          # Validate that only added and modified files are allowed.
-          # If there are added files, themes.yaml must be updated.
-
           # Check that all changes are either added or modified files.
           if [ "$ALL_CHANGED_AND_MODIFIED_FILES_COUNT" -ne $((ADDED_FILES_COUNT + MODIFIED_FILES_COUNT)) ]; then
             echo "Error: Only added and modified files are allowed."
             exit 1
           fi
+
+          # Check that only .zip files and themes.yaml are modified or added.
+          for file in ${MODIFIED_FILES}; do
+            if [[ "$file" != "themes.yaml" && "$file" != *.zip ]]; then
+              echo "Error: Only themes.yaml and .zip files are allowed to be modified, but found: $file"
+              exit 1
+            fi
+          done
+
+          for file in ${ADDED_FILES}; do
+            if [[ "$file" != *.zip ]]; then
+              echo "Error: Only .zip files are allowed to be added, but found: $file"
+              exit 1
+            fi
+          done
 
           # If there are added files, themes.yaml must be updated.
           if [ "$ADDED_FILES_COUNT" -gt 0 ]; then
@@ -46,4 +62,23 @@ jobs:
               echo "Error: When adding new files, themes.yaml must be updated."
               exit 1
             fi
+          fi
+
+          # Validate all .zip files (both added and modified)
+          zip_files=""
+          for file in ${ADDED_FILES}; do
+            if [[ "$file" == *.zip ]]; then
+              zip_files="$zip_files $file"
+            fi
+          done
+
+          for file in ${MODIFIED_FILES}; do
+            if [[ "$file" == *.zip ]]; then
+              zip_files="$zip_files $file"
+            fi
+          done
+
+          if [ -n "$zip_files" ]; then
+            echo "Validating theme files:$zip_files"
+            python .github/theme_validator.py --packed_themes$zip_files
           fi
