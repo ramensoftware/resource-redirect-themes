@@ -1,0 +1,29 @@
+name: Theme validation
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    name: Validate all theme files
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate changed files
+        run: |
+          # Validate all .zip files from the themes folder.
+          zip_files=()
+          if [ -d "themes" ]; then
+            while IFS= read -r -d '' file; do
+              zip_files+=("$file")
+            done < <(find themes -name "*.zip" -type f -print0)
+          fi
+
+          if [ ${#zip_files[@]} -gt 0 ]; then
+            echo "Validating theme files: ${zip_files[*]}"
+            python .github/theme_validator.py --packed_themes "${zip_files[@]}"
+          else
+            echo "No .zip theme files found in themes folder"
+          fi

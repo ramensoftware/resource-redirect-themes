@@ -1,12 +1,96 @@
 import argparse
+import os
+import struct
 import sys
 import tempfile
 import zipfile
 from pathlib import Path
 
-import pefile
-
 from list_resources import get_resource_types
+
+
+def get_pe_section_names(file_path: Path) -> list[str]:
+    """
+    Parse PE file and return list of section names.
+    Returns empty list if not a valid PE file.
+    """
+    try:
+        with open(file_path, 'rb') as f:
+            # Read DOS header
+            dos_header = f.read(64)
+            if len(dos_header) < 64 or dos_header[:2] != b'MZ':
+                return []
+
+            # Get PE header offset
+            pe_offset = struct.unpack('<I', dos_header[60:64])[0]
+
+            # Seek to PE header
+            f.seek(pe_offset)
+            pe_signature = f.read(4)
+            if pe_signature != b'PE\x00\x00':
+                return []
+
+            # Read COFF header
+            coff_header = f.read(20)
+            if len(coff_header) < 20:
+                return []
+
+            # Extract number of sections and size of optional header
+            num_sections = struct.unpack('<H', coff_header[2:4])[0]
+            optional_header_size = struct.unpack('<H', coff_header[16:18])[0]
+
+            # Skip optional header
+            f.seek(f.tell() + optional_header_size)
+
+            # Read section headers
+            section_names = []
+            for _ in range(num_sections):
+                section_header = f.read(40)
+                if len(section_header) < 40:
+                    break
+
+                # Section name is first 8 bytes, null-terminated
+                name_bytes = section_header[:8]
+                name = name_bytes.rstrip(b'\x00').decode('ascii', errors='ignore')
+                section_names.append(name)
+
+            return section_names
+
+    except (IOError, struct.error, UnicodeDecodeError):
+        return []
+
+
+def find_file_case_insensitive(target_path: Path) -> Path | None:
+    """
+    Find a file in a case-insensitive manner on case-sensitive file systems.
+    Returns the actual path if found, None otherwise.
+    """
+    if target_path.exists():
+        return target_path
+
+    # On case-insensitive file systems (like Windows), just return None if not found
+    if os.name == 'nt':
+        return None
+
+    # On case-sensitive file systems (like Linux), search case-insensitively
+    parent = target_path.parent
+    target_name = target_path.name.lower()
+
+    if not parent.exists():
+        # Try to find parent directory case-insensitively
+        parent_found = find_file_case_insensitive(parent)
+        if not parent_found:
+            return None
+        parent = parent_found
+
+    try:
+        for item in parent.iterdir():
+            if item.name.lower() == target_name:
+                return item
+    except (OSError, PermissionError):
+        pass
+
+    return None
 
 
 def check_path(path: Path):
@@ -51,19 +135,27 @@ def check_path(path: Path):
 
         for source, target in redirections.items():
             # Convert relative path to absolute path within the theme directory
-            target_path = path / target.lstrip('.\\').lstrip('./')
+            target_path = path / target.replace('\\', '/')
             referenced_files.add(target_path)
 
             if not target_path.exists():
-                errors.append(
-                    f"Redirection target not found: {target} -> {target_path}"
-                )
+                # On Linux, check if the target exists in a case-insensitive manner
+                actual_path = find_file_case_insensitive(target_path)
+                if actual_path:
+                    target_path = actual_path
+                    referenced_files.add(target_path)
+                else:
+                    errors.append(
+                        f"Redirection target not found: {target} -> {target_path}"
+                    )
+                    continue
             elif not target_path.is_file():
                 errors.append(f"Redirection target is not a file: {target_path}")
-            else:
-                # Validate PE file structure
-                pe_errors = validate_pe_file(target_path)
-                errors.extend(pe_errors)
+                continue
+
+            # Validate PE file structure
+            pe_errors = validate_pe_file(target_path)
+            errors.extend(pe_errors)
 
         # Check for unreferenced files in the theme directory
         all_files = set()
@@ -93,37 +185,18 @@ def validate_pe_file(file_path: Path) -> list[str]:
     """
     errors = []
 
-    try:
-        # Use pefile for easier PE parsing
-        with pefile.PE(str(file_path)) as pe:
-            # Check number of sections
-            if len(pe.sections) != 1:
-                errors.append(
-                    f"PE file should have exactly 1 section, found {len(pe.sections)}:"
-                    f" {file_path.name}"
-                )
-                return errors
+    # Get section names using our custom parser
+    section_names = get_pe_section_names(file_path)
 
-            # Check section name
-            section_name = (
-                pe.sections[0].Name.rstrip(b'\x00').decode('ascii', errors='ignore')
-            )
+    if section_names != ['.rsrc']:
+        errors.append(
+            f"PE file should have only .rsrc section, found: {section_names}: "
+            f"{file_path.name}"
+        )
 
-        if section_name != '.rsrc':
-            errors.append(
-                f"PE file should have only .rsrc section, found: {section_name}:"
-                f" {file_path.name}"
-            )
-            return errors
-
-        # Validate resource content - check that all resources are icons
-        resource_errors = validate_resource_types(file_path)
-        errors.extend(resource_errors)
-
-    except pefile.PEFormatError:
-        errors.append(f"Not a valid PE file: {file_path.name}")
-    except Exception as e:
-        errors.append(f"Error reading PE file {file_path.name}: {str(e)}")
+    # Validate resource content - check that all resources are icons
+    resource_errors = validate_resource_types(file_path)
+    errors.extend(resource_errors)
 
     return errors
 
