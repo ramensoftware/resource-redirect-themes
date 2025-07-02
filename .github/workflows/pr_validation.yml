@@ -17,6 +17,7 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v46
         with:
+          separator: ","
           safe_output: false # set to false because we are using an environment variable to store the output and avoid command injection.
 
       - name: Validate changed files
@@ -34,14 +35,16 @@ jobs:
           fi
 
           # Check that only .zip files and themes.yaml are modified or added.
-          for file in ${MODIFIED_FILES}; do
+          IFS=',' read -ra MODIFIED_FILES_ARRAY <<< "$MODIFIED_FILES"
+          for file in "${MODIFIED_FILES_ARRAY[@]}"; do
             if [[ "$file" != "themes.yaml" && "$file" != *.zip ]]; then
               echo "Error: Only themes.yaml and .zip files are allowed to be modified, but found: $file"
               exit 1
             fi
           done
 
-          for file in ${ADDED_FILES}; do
+          IFS=',' read -ra ADDED_FILES_ARRAY <<< "$ADDED_FILES"
+          for file in "${ADDED_FILES_ARRAY[@]}"; do
             if [[ "$file" != *.zip ]]; then
               echo "Error: Only .zip files are allowed to be added, but found: $file"
               exit 1
@@ -51,7 +54,7 @@ jobs:
           # If there are added files, themes.yaml must be updated.
           if [ "$ADDED_FILES_COUNT" -gt 0 ]; then
             themes_yaml_updated=false
-            for file in ${MODIFIED_FILES}; do
+            for file in "${MODIFIED_FILES_ARRAY[@]}"; do
               if [ "$file" = "themes.yaml" ]; then
                 themes_yaml_updated=true
                 break
@@ -65,20 +68,20 @@ jobs:
           fi
 
           # Validate all .zip files (both added and modified)
-          zip_files=""
-          for file in ${ADDED_FILES}; do
+          zip_files=()
+          for file in "${ADDED_FILES_ARRAY[@]}"; do
             if [[ "$file" == *.zip ]]; then
-              zip_files="$zip_files $file"
+              zip_files+=("$file")
             fi
           done
 
-          for file in ${MODIFIED_FILES}; do
+          for file in "${MODIFIED_FILES_ARRAY[@]}"; do
             if [[ "$file" == *.zip ]]; then
-              zip_files="$zip_files $file"
+              zip_files+=("$file")
             fi
           done
 
-          if [ -n "$zip_files" ]; then
-            echo "Validating theme files:$zip_files"
-            python .github/theme_validator.py --packed_themes$zip_files
+          if [ ${#zip_files[@]} -gt 0 ]; then
+            echo "Validating theme files: ${zip_files[*]}"
+            python .github/theme_validator.py --packed_themes "${zip_files[@]}"
           fi
