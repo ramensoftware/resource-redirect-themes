@@ -171,6 +171,8 @@
       name: Janguru Orange
     - path: themes/icons/niivu/koZ.zip
       name: koZ
+    - path: themes/icons/niivu/Kripton Flatery.zip
+      name: Kripton Flatery
     - path: themes/icons/niivu/Linuxfx-11-AIO.zip
       name: Linuxfx 11 AIO
     - path: themes/icons/niivu/Linuxfx-11-lite.zip
@@ -309,8 +311,8 @@
       name: Sweetness Original
     - path: themes/icons/niivu/Sweetness Pink folders.zip
       name: Sweetness Pink
-    - path: themes/icons/niivu/Sweetness Purple folders.zip
-      name: Sweetness Purple
+    # - path: themes/icons/niivu/Sweetness Purple folders.zip
+    #   name: Sweetness Purple
     - path: themes/icons/niivu/Sweet-Rainbow.zip
       name: Sweet Rainbow
     - path: themes/icons/niivu/Uos Icon pack.zip
