@@ -311,8 +311,8 @@
       name: Sweetness Original
     - path: themes/icons/niivu/Sweetness Pink folders.zip
       name: Sweetness Pink
-    # - path: themes/icons/niivu/Sweetness Purple folders.zip
-    #   name: Sweetness Purple
+    - path: themes/icons/niivu/Sweetness Purple folders.zip
+      name: Sweetness Purple
     - path: themes/icons/niivu/Sweet-Rainbow.zip
       name: Sweet Rainbow
     - path: themes/icons/niivu/Uos Icon pack.zip
