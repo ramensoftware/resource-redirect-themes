@@ -7,6 +7,7 @@ import zipfile
 from pathlib import Path
 
 from list_resources import get_resource_types
+from find_orphaned_icons import analyze_icon_resources as find_orphaned_icons_analyze
 
 
 def get_pe_section_names(file_path: Path) -> list[str]:
@@ -197,6 +198,13 @@ def validate_pe_file(file_path: Path) -> list[str]:
     # Validate resource content - check that all resources are icons
     resource_errors = validate_resource_types(file_path)
     errors.extend(resource_errors)
+
+    # Check for orphaned icons
+    orphaned_icons, _ = find_orphaned_icons_analyze(file_path)
+    if orphaned_icons:
+        error_msg = f"Found {len(orphaned_icons)} orphaned icons in {file_path.name}: "
+        error_msg += ', '.join(str(orphan) for orphan in orphaned_icons)
+        errors.append(error_msg)
 
     return errors
 
