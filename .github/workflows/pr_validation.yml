@@ -16,7 +16,9 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          # Pinned to 3.13 because pe_tools is incompatible with 3.14+
+          # (PEP 749 changed __annotations__ behavior, breaking pe_tools' Struct3).
+          python-version: '3.13'
           cache-dependency-path: '.github/requirements.txt'
 
       - name: Install Python dependencies
