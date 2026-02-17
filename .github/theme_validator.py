@@ -186,8 +186,17 @@ def validate_pe_file(file_path: Path) -> list[str]:
     """
     errors = []
 
+    file_size = file_path.stat().st_size
+    if file_size == 0:
+        errors.append(f"Empty file (0 bytes): {file_path.name}")
+        return errors
+
     # Get section names using our custom parser
     section_names = get_pe_section_names(file_path)
+
+    if not section_names:
+        errors.append(f"Not a valid PE file ({file_size} bytes): {file_path.name}")
+        return errors
 
     if section_names != ['.rsrc']:
         errors.append(
@@ -200,7 +209,12 @@ def validate_pe_file(file_path: Path) -> list[str]:
     errors.extend(resource_errors)
 
     # Check for orphaned icons
-    orphaned_icons, _ = find_orphaned_icons_analyze(file_path)
+    try:
+        orphaned_icons, _ = find_orphaned_icons_analyze(file_path)
+    except Exception as e:
+        errors.append(f"Failed to analyze icons in {file_path.name}: {e}")
+        return errors
+
     if orphaned_icons:
         error_msg = f"Found {len(orphaned_icons)} orphaned icons in {file_path.name}: "
         error_msg += ', '.join(str(orphan) for orphan in orphaned_icons)
