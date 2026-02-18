@@ -9,10 +9,10 @@ jobs:
     name: Validate all theme files
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           # Pinned to 3.13 because pe_tools is incompatible with 3.14+
           # (PEP 749 changed __annotations__ behavior, breaking pe_tools' Struct3).
