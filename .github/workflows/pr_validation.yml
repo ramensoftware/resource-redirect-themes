@@ -10,8 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     name: Test changed files
     steps:
-      - name: Checkout
+      # Sparse checkout automatically uses --filter=blob:none,
+      # so only .github/ blobs are fetched (no zip file downloads).
+      # fetch-depth: 2 gives us the merge commit's parent for diffing.
+      - name: Checkout .github only
         uses: actions/checkout@v6
+        with:
+          sparse-checkout: .github
+          fetch-depth: 2
 
       - name: Setup Python
         uses: actions/setup-python@v6
@@ -24,38 +30,35 @@ jobs:
       - name: Install Python dependencies
         run: python -m pip install -r .github/requirements.txt
 
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v47
-        with:
-          separator: ","
-          safe_output: false # set to false because we are using an environment variable to store the output and avoid command injection.
-
       - name: Validate changed files
-        env:
-          ADDED_FILES: ${{ steps.changed-files.outputs.added_files }}
-          ADDED_FILES_COUNT: ${{ steps.changed-files.outputs.added_files_count }}
-          MODIFIED_FILES: ${{ steps.changed-files.outputs.modified_files }}
-          MODIFIED_FILES_COUNT: ${{ steps.changed-files.outputs.modified_files_count }}
-          ALL_CHANGED_AND_MODIFIED_FILES_COUNT: ${{ steps.changed-files.outputs.all_changed_and_modified_files_count }}
         run: |
+          # Get changed files from git (only tree objects needed, no blobs).
+          added=()
+          modified=()
+          other=()
+          while IFS=$'\t' read -r status file; do
+            case "$status" in
+              A) added+=("$file") ;;
+              M) modified+=("$file") ;;
+              *) other+=("$file") ;;
+            esac
+          done < <(git diff --name-status HEAD~1)
+
           # Check that all changes are either added or modified files.
-          if [ "$ALL_CHANGED_AND_MODIFIED_FILES_COUNT" -ne $((ADDED_FILES_COUNT + MODIFIED_FILES_COUNT)) ]; then
-            echo "Error: Only added and modified files are allowed."
+          if [ ${#other[@]} -gt 0 ]; then
+            echo "Error: Only added and modified files are allowed, but found: ${other[*]}"
             exit 1
           fi
 
           # Check that only .zip files and themes.yaml are modified or added.
-          IFS=',' read -ra MODIFIED_FILES_ARRAY <<< "$MODIFIED_FILES"
-          for file in "${MODIFIED_FILES_ARRAY[@]}"; do
+          for file in "${modified[@]}"; do
             if [[ "$file" != "themes.yaml" && "$file" != *.zip ]]; then
               echo "Error: Only themes.yaml and .zip files are allowed to be modified, but found: $file"
               exit 1
             fi
           done
 
-          IFS=',' read -ra ADDED_FILES_ARRAY <<< "$ADDED_FILES"
-          for file in "${ADDED_FILES_ARRAY[@]}"; do
+          for file in "${added[@]}"; do
             if [[ "$file" != *.zip ]]; then
               echo "Error: Only .zip files are allowed to be added, but found: $file"
               exit 1
@@ -63,9 +66,9 @@ jobs:
           done
 
           # If there are added files, themes.yaml must be updated.
-          if [ "$ADDED_FILES_COUNT" -gt 0 ]; then
+          if [ ${#added[@]} -gt 0 ]; then
             themes_yaml_updated=false
-            for file in "${MODIFIED_FILES_ARRAY[@]}"; do
+            for file in "${modified[@]}"; do
               if [ "$file" = "themes.yaml" ]; then
                 themes_yaml_updated=true
                 break
@@ -78,21 +81,18 @@ jobs:
             fi
           fi
 
-          # Validate all .zip files (both added and modified)
+          # Collect all .zip files (both added and modified)
           zip_files=()
-          for file in "${ADDED_FILES_ARRAY[@]}"; do
-            if [[ "$file" == *.zip ]]; then
-              zip_files+=("$file")
-            fi
-          done
-
-          for file in "${MODIFIED_FILES_ARRAY[@]}"; do
+          for file in "${added[@]}" "${modified[@]}"; do
             if [[ "$file" == *.zip ]]; then
               zip_files+=("$file")
             fi
           done
 
           if [ ${#zip_files[@]} -gt 0 ]; then
+            # Lazy-fetch only the needed zip blobs via the partial clone.
+            git checkout HEAD -- "${zip_files[@]}"
+
             echo "Validating theme files: ${zip_files[*]}"
             python .github/theme_validator.py --packed_themes "${zip_files[@]}"
           fi
