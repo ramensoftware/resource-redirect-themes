@@ -312,7 +312,10 @@ def validate_dib_data(data: bytes, is_icon: bool = True) -> str | None:
         )
 
     trailing = len(data) - expected_size
-    if trailing > 0:
+    # RT_BITMAP resources may have up to 2 bytes of zero padding from PE alignment
+    if not is_icon and trailing <= 2 and data[-trailing:] == b'\x00' * trailing:
+        pass  # Acceptable padding for bitmaps
+    elif trailing > 0:
         return (
             f"trailing data after {actual_width}x{actual_height} {bit_count}bit "
             f"(expected {expected_size}, got {len(data)}, {trailing} extra bytes)"
