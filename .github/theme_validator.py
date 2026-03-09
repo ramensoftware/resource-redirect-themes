@@ -6,6 +6,8 @@ import tempfile
 import zipfile
 from pathlib import Path
 
+from pe_tools import parse_pe
+
 from list_resources import get_resource_types
 from find_orphaned_icons import analyze_icon_resources as find_orphaned_icons_analyze
 
@@ -208,6 +210,10 @@ def validate_pe_file(file_path: Path) -> list[str]:
     resource_errors = validate_resource_types(file_path)
     errors.extend(resource_errors)
 
+    # Validate actual image data integrity
+    image_errors = validate_resource_images(file_path)
+    errors.extend(image_errors)
+
     # Check for orphaned icons
     try:
         orphaned_icons, _ = find_orphaned_icons_analyze(file_path)
@@ -219,6 +225,162 @@ def validate_pe_file(file_path: Path) -> list[str]:
         error_msg = f"Found {len(orphaned_icons)} orphaned icons in {file_path.name}: "
         error_msg += ', '.join(str(orphan) for orphan in orphaned_icons)
         errors.append(error_msg)
+
+    return errors
+
+
+def validate_png_data(data: bytes) -> str | None:
+    """
+    Validate PNG data by walking chunks to verify IEND is reached.
+    Returns an error string if invalid, None if valid.
+    """
+    signature = b'\x89PNG\r\n\x1a\n'
+    if len(data) < 8 or data[:8] != signature:
+        return "missing PNG signature"
+
+    offset = 8
+    while offset + 8 <= len(data):
+        chunk_length = struct.unpack('>I', data[offset:offset + 4])[0]
+        chunk_type = data[offset + 4:offset + 8]
+        chunk_end = offset + 12 + chunk_length  # 4 length + 4 type + data + 4 CRC
+        if chunk_type == b'IEND':
+            trailing = len(data) - chunk_end
+            if trailing > 0:
+                return f"trailing data after IEND ({trailing} extra bytes)"
+            return None  # Valid
+        offset = chunk_end
+
+    return f"truncated (no IEND chunk, {len(data)} bytes)"
+
+
+def validate_dib_data(data: bytes, is_icon: bool = True) -> str | None:
+    """
+    Validate DIB (device-independent bitmap) data.
+    For icons (is_icon=True): height is doubled (includes AND mask).
+    For bitmaps (is_icon=False): height is as-is, no AND mask.
+    Returns an error string if invalid, None if valid.
+    """
+    if len(data) < 40:
+        return f"too short for DIB header ({len(data)} bytes)"
+
+    header_size = struct.unpack('<I', data[:4])[0]
+    if header_size not in (40, 108, 124):
+        return f"invalid DIB header size {header_size}"
+
+    width, height = struct.unpack('<ii', data[4:12])
+    _planes, bit_count = struct.unpack('<HH', data[12:16])
+    compression = struct.unpack('<I', data[16:20])[0]
+
+    if is_icon:
+        actual_height = abs(height) // 2  # Icons store double height for AND mask
+    else:
+        actual_height = abs(height)
+    actual_width = abs(width)
+
+    if actual_width == 0 or actual_height == 0:
+        return f"zero dimensions ({actual_width}x{actual_height})"
+
+    if is_icon and (actual_width > 1024 or actual_height > 1024):
+        return f"unreasonable dimensions ({actual_width}x{actual_height})"
+
+    # Skip size check for compressed bitmaps (RLE8=1, RLE4=2)
+    if compression != 0:
+        return None
+
+    # Calculate row bytes: ((width * bit_count + 31) / 32) * 4
+    row_bytes = ((actual_width * bit_count + 31) // 32) * 4
+
+    # Color table size for indexed formats
+    if bit_count <= 8:
+        clr_used = struct.unpack('<I', data[32:36])[0]
+        if clr_used > 0:
+            color_table_size = clr_used * 4
+        else:
+            color_table_size = (1 << bit_count) * 4
+    else:
+        color_table_size = 0
+
+    expected_size = header_size + color_table_size + row_bytes * actual_height
+    if is_icon:
+        and_mask_row = ((actual_width + 31) // 32) * 4
+        expected_size += and_mask_row * actual_height
+
+    if len(data) < expected_size:
+        return (
+            f"data too short for {actual_width}x{actual_height} {bit_count}bit "
+            f"(expected {expected_size}, got {len(data)} bytes)"
+        )
+
+    trailing = len(data) - expected_size
+    if trailing > 0:
+        return (
+            f"trailing data after {actual_width}x{actual_height} {bit_count}bit "
+            f"(expected {expected_size}, got {len(data)}, {trailing} extra bytes)"
+        )
+
+    return None
+
+
+def validate_resource_images(file_path: Path) -> list[str]:
+    """
+    Validate the actual image data of icon and bitmap resources in a PE file.
+    Detects truncated PNGs, corrupt DIBs, etc.
+    Returns a list of error messages.
+    """
+    errors = []
+
+    try:
+        with open(file_path, 'rb') as f:
+            pe = parse_pe(f.read())
+        resources = pe.parse_resources()
+    except Exception as e:
+        errors.append(f"Failed to parse resources in {file_path.name}: {e}")
+        return errors
+
+    if not resources:
+        return errors
+
+    # Validate RT_ICON (type 3) resources
+    if 3 in resources:
+        for icon_id, languages in resources[3].items():
+            for _lang_id, icon_data in languages.items():
+                data = bytes(icon_data)
+                if len(data) == 0:
+                    errors.append(
+                        f"Empty RT_ICON {icon_id} in {file_path.name}"
+                    )
+                    continue
+
+                is_png = data[:8] == b'\x89PNG\r\n\x1a\n'
+                if is_png:
+                    error = validate_png_data(data)
+                else:
+                    error = validate_dib_data(data)
+
+                if error:
+                    fmt = "PNG" if is_png else "DIB"
+                    errors.append(
+                        f"Invalid {fmt} in RT_ICON {icon_id} of "
+                        f"{file_path.name}: {error}"
+                    )
+
+    # Validate RT_BITMAP (type 2) resources
+    if 2 in resources:
+        for bmp_id, languages in resources[2].items():
+            for _lang_id, bmp_data in languages.items():
+                data = bytes(bmp_data)
+                if len(data) == 0:
+                    errors.append(
+                        f"Empty RT_BITMAP {bmp_id} in {file_path.name}"
+                    )
+                    continue
+
+                error = validate_dib_data(data, is_icon=False)
+                if error:
+                    errors.append(
+                        f"Invalid DIB in RT_BITMAP {bmp_id} of "
+                        f"{file_path.name}: {error}"
+                    )
 
     return errors
 
