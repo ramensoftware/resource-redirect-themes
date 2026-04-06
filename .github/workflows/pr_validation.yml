@@ -90,7 +90,9 @@ jobs:
           done
 
           if [ ${#zip_files[@]} -gt 0 ]; then
-            # Lazy-fetch only the needed zip blobs via the partial clone.
+            # Add zip file directories to sparse checkout so git can resolve the paths,
+            # then lazy-fetch only the needed zip blobs via the partial clone.
+            git sparse-checkout add $(printf '%s\n' "${zip_files[@]}" | xargs -I{} dirname {} | sort -u)
             git checkout HEAD -- "${zip_files[@]}"
 
             echo "Validating theme files: ${zip_files[*]}"
