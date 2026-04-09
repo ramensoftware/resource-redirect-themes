@@ -334,3 +334,8 @@
   themes:
     - path: themes/icons/ImSwordQueen/Pane7.zip
       name: Pane7
+- author: NicSonic
+  link: https://github.com/NichoGamerTv
+  themes:
+    - path: themes/icons/NicSonic/Pane8.1.zip
+      name: Pane8.1
