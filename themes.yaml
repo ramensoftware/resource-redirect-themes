@@ -342,15 +342,5 @@
 - author: WasiXGamer
   link: https://github.com/wasiabbas4pk
   themes:
-    - path: themes/icons/Wasiabbas4pk/Minecraft Panda.zip
-      name: Minecraft Panda (credits:dalps/minecraft11)
-    - path: themes/icons/Wasiabbas4pk/Minecraft Fox.zip
-      name: Minecraft Fox (credits:dalps/minecraft11)
-    - path: themes/icons/Wasiabbas4pk/Minecraft Shulker(Red).zip
-      name: Minecraft Shulker(Red) (credits:dalps/minecraft11)
-    - path: themes/icons/Wasiabbas4pk/Minecraft Shulker(Green).zip
-      name: Minecraft Shulker(Green) (credits:dalps/minecraft11)
-    - path: themes/icons/Wasiabbas4pk/Minecraft Shulker(Orange).zip
-      name: Minecraft Shulker(Orange) (credits:dalps/minecraft11)
-    - path: themes/icons/Wasiabbas4pk/Minecraft Dark Bedrock.zip
-      name: Minecraft Dark(Bedrock) (credits:dalps/minecraft11)
+    - path: themes/icons/Wasiabbas4pk/Minecraft Axolotle
+      name: Minecraft Axolotle (credits:dalps/minecraft11)
