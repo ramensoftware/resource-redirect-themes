@@ -337,3 +337,8 @@
     - path: themes/icons/SoftwareType/PaneVista.zip
       name: PaneVista
       portAuthor: SoftwareType # portAuthor is the responsible for the theme. It must appear first!
+- author: NicSonic
+  link: https://github.com/NichoGamerTv
+  themes:
+    - path: themes/icons/NicSonic/Pane8.1.zip
+      name: Pane8.1
