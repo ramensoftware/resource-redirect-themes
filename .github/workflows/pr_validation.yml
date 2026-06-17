@@ -106,6 +106,17 @@ jobs:
       - name: Install Python dependencies
         run: python -m pip install -r .github/requirements.txt
 
+      - name: Validate themes.yaml
+        run: |
+          # themes.yaml lives at the repo root, so the cone-mode sparse
+          # checkout already includes it; materialize it explicitly to be safe.
+          git checkout HEAD -- themes.yaml
+          # List every tracked file at HEAD (trees only, no blob fetch) so the
+          # validator can confirm each referenced .zip exists without
+          # downloading the theme archives.
+          git ls-tree -r -z --name-only HEAD > "$RUNNER_TEMP/tracked_files.txt"
+          python .github/validate_themes_yaml.py --known-files "$RUNNER_TEMP/tracked_files.txt"
+
       - name: Validate theme files
         env:
           ADDED: ${{ steps.changed.outputs.added }}

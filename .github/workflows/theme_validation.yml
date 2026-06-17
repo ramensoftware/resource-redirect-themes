@@ -22,6 +22,10 @@ jobs:
       - name: Install Python dependencies
         run: python -m pip install -r .github/requirements.txt
 
+      - name: Validate themes.yaml
+        # Full checkout, so existence is checked against the working tree.
+        run: python .github/validate_themes_yaml.py
+
       - name: Validate changed files
         run: |
           # Validate all .zip files from the themes folder.
