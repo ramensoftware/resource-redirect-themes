@@ -329,14 +329,17 @@
       name: Windows 11 New Folders Slate
     - path: themes/icons/niivu/Windows 11 New Folders Yellow.zip
       name: Windows 11 New Folders Yellow
+- author: SoftwareType
+  link: https://github.com/SoftwareType
+  themes:
+    - path: themes/icons/SoftwareType/PaneVista.zip
+      name: PaneVista
+      originalAuthor: ImSwordQueen
 - author: ImSwordQueen
   link: https://github.com/ImSwordQueen
   themes:
     - path: themes/icons/ImSwordQueen/Pane7.zip
       name: Pane7
-    - path: themes/icons/SoftwareType/PaneVista.zip
-      name: PaneVista
-      portAuthor: SoftwareType # portAuthor is the responsible for the theme. It must appear first!
 - author: NicSonic
   link: https://github.com/NichoGamerTv
   themes:
@@ -345,20 +348,27 @@
 - author: WasiXGamer
   link: https://github.com/wasiabbas4pk
   themes:
-    - path: themes/icons/Wasiabbas4pk/Minecraft Axolotle
-      name: Minecraft Axolotle (credits:dalps/minecraft11)
+    - path: themes/icons/Wasiabbas4pk/Minecraft Axolotle.zip
+      name: Minecraft Axolotle
+      originalAuthor: dalps/minecraft11
     - path: themes/icons/Wasiabbas4pk/Minecraft Fox.zip
-      name: Minecraft Fox (credits:dalps/minecraft11)
+      name: Minecraft Fox
+      originalAuthor: dalps/minecraft11
     - path: themes/icons/Wasiabbas4pk/Minecraft TNT.zip
-      name: Minecraft TNT (credits:dalps/minecraft11)
+      name: Minecraft TNT
+      originalAuthor: dalps/minecraft11
     - path: themes/icons/Wasiabbas4pk/Minecraft Panda.zip
-      name: Minecraft Panda (credits:dalps/minecraft11)
+      name: Minecraft Panda
+      originalAuthor: dalps/minecraft11
     - path: themes/icons/Wasiabbas4pk/Minecraft Creeper.zip
-      name: Minecraft Creeper (credits:dalps/minecraft11)
+      name: Minecraft Creeper
+      originalAuthor: dalps/minecraft11
     - path: themes/icons/Wasiabbas4pk/Minecraft Ender Dragon.zip
-      name: Minecraft Ender Dragon (credits:dalps/minecraft11)
+      name: Minecraft Ender Dragon
+      originalAuthor: dalps/minecraft11
     - path: themes/icons/Wasiabbas4pk/Minecraft Shulker(Blue).zip
-      name: Minecraft Shulker(Blue) (credits:dalps/minecraft11)
+      name: Minecraft Shulker (Blue)
+      originalAuthor: dalps/minecraft11
     - path: themes/icons/Wasiabbas4pk/Minecraft Shulker(Black).zip
-      name: Minecraft Shulker(Black) (credits:dalps/minecraft11)
-
+      name: Minecraft Shulker (Black)
+      originalAuthor: dalps/minecraft11
