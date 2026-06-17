@@ -342,3 +342,23 @@
   themes:
     - path: themes/icons/NicSonic/Pane8.1.zip
       name: Pane8.1
+- author: WasiXGamer
+  link: https://github.com/wasiabbas4pk
+  themes:
+    - path: themes/icons/Wasiabbas4pk/Minecraft Axolotle
+      name: Minecraft Axolotle (credits:dalps/minecraft11)
+    - path: themes/icons/Wasiabbas4pk/Minecraft Fox.zip
+      name: Minecraft Fox (credits:dalps/minecraft11)
+    - path: themes/icons/Wasiabbas4pk/Minecraft TNT.zip
+      name: Minecraft TNT (credits:dalps/minecraft11)
+    - path: themes/icons/Wasiabbas4pk/Minecraft Panda.zip
+      name: Minecraft Panda (credits:dalps/minecraft11)
+    - path: themes/icons/Wasiabbas4pk/Minecraft Creeper.zip
+      name: Minecraft Creeper (credits:dalps/minecraft11)
+    - path: themes/icons/Wasiabbas4pk/Minecraft Ender Dragon.zip
+      name: Minecraft Ender Dragon (credits:dalps/minecraft11)
+    - path: themes/icons/Wasiabbas4pk/Minecraft Shulker(Blue).zip
+      name: Minecraft Shulker(Blue) (credits:dalps/minecraft11)
+    - path: themes/icons/Wasiabbas4pk/Minecraft Shulker(Black).zip
+      name: Minecraft Shulker(Black) (credits:dalps/minecraft11)
+
