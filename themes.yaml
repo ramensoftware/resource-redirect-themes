@@ -334,6 +334,9 @@
   themes:
     - path: themes/icons/ImSwordQueen/Pane7.zip
       name: Pane7
+    - path: themes/icons/SoftwareType/PaneVista.zip
+      name: PaneVista
+      portAuthor: SoftwareType # portAuthor is the responsible for the theme. It must appear first!
 - author: NicSonic
   link: https://github.com/NichoGamerTv
   themes:
