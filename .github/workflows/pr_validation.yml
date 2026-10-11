@@ -11,12 +11,16 @@ jobs:
     name: Test changed files
     steps:
       # Sparse checkout automatically uses --filter=blob:none,
-      # so only .github/ blobs are fetched (no zip file downloads).
+      # so only the listed paths' blobs are fetched (no zip file downloads).
+      # Non-cone mode lets single zip files be added later.
       # fetch-depth: 2 gives us the merge commit's parent for diffing.
-      - name: Checkout .github only
+      - name: Checkout .github and themes.yaml
         uses: actions/checkout@v6
         with:
-          sparse-checkout: .github
+          sparse-checkout: |
+            /.github/
+            /themes.yaml
+          sparse-checkout-cone-mode: false
           fetch-depth: 2
 
       - name: Get changed files
@@ -108,9 +112,6 @@ jobs:
 
       - name: Validate themes.yaml
         run: |
-          # themes.yaml lives at the repo root, so the cone-mode sparse
-          # checkout already includes it; materialize it explicitly to be safe.
-          git checkout HEAD -- themes.yaml
           # List every tracked file at HEAD (trees only, no blob fetch) so the
           # validator can confirm each referenced .zip exists without
           # downloading the theme archives.
@@ -136,10 +137,9 @@ jobs:
             exit 0
           fi
 
-          # Add zip file directories to sparse checkout so git can resolve the paths,
-          # then lazy-fetch only the needed zip blobs via the partial clone.
-          git sparse-checkout add $(printf '%s\n' "${zip_files[@]}" | xargs -I{} dirname {} | sort -u)
-          git checkout HEAD -- "${zip_files[@]}"
+          # Add each zip file as a pattern anchored at the repository root, which
+          # lazy-fetches only the needed zip blobs via the partial clone.
+          git sparse-checkout add "${zip_files[@]/#//}"
 
           echo "Validating theme files: ${zip_files[*]}"
           python .github/theme_validator.py --packed_themes "${zip_files[@]}"
